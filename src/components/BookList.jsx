@@ -4,8 +4,8 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import { BookTable } from "./BookTable"; // Crear este componente para la tabla de libros
-import { BookForm } from "./BookForm"; // Crear este componente para el formulario de libros
+import { BookTable } from "../hooks/BookTable"; // Crear este componente para la tabla de libros
+import { BookForm } from "../hooks/BookForm"; // Crear este componente para el formulario de libros
 import { ThemeProvider } from "@emotion/react";
 import { CssBaseline, createTheme } from "@mui/material";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";

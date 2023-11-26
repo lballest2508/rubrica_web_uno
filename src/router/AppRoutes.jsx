@@ -4,6 +4,7 @@ import { Home } from '../components/Home'
 import { BookList } from '../components/BookList'
 import { Login } from '../components/Login'
 import SignUp from '../components/SingUp'
+import { BookLoans } from '../components/BookLoans'
 
 export const AppRoutes = () => {
   return (
@@ -14,6 +15,7 @@ export const AppRoutes = () => {
             <Route path="/books" element={<BookList/>} />
             <Route path="/home" element={<Home/>} />
             <Route path="/singup" element={<SignUp/>} />
+            <Route path="/loans" element={<BookLoans/>} />
             {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
     </BrowserRouter>
