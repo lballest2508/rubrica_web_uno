@@ -14,6 +14,9 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import image from '../../assets/img/unicosta.jpg';
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../firebase';
+import { useState } from 'react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 function Copyright(props) {
   return (
@@ -34,14 +37,29 @@ const defaultTheme = createTheme();
 
 export const Login = () => {
   const navigate = useNavigate();
-  const handleSubmit = (event) => {
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    navigate('/home');
+  const [email, setEmail] = useState('');
+  const [pass, setPass] = useState('');
+
+  const loguear = React.useCallback(() => {
+    signInWithEmailAndPassword(auth, email, pass)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            localStorage.setItem('accessToken', user.stsTokenManager.accessToken);
+            localStorage.setItem('refreshToken', user.stsTokenManager.refreshToken);
+            navigate('/home');
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+        });
+}, [email, pass]);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    loguear();
   };
+  
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -87,6 +105,8 @@ export const Login = () => {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <TextField
                 margin="normal"
@@ -97,6 +117,8 @@ export const Login = () => {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={pass}
+                onChange={(e) => setPass(e.target.value)}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}

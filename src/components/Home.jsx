@@ -16,6 +16,9 @@ import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { IconButton } from '@mui/material';
+import {  signOut } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
+import { auth } from '../firebase';
 
 function Copyright() {
   return (
@@ -34,6 +37,19 @@ function Copyright() {
 const defaultTheme = createTheme();
 
 export const Home = () => {
+
+  const navigate = useNavigate();
+
+  const handlelogout = () => { 
+    signOut(auth).then(() => {
+      navigate('/login');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -44,8 +60,8 @@ export const Home = () => {
             Biblioteca Unicosta
           </Typography>
           {/* Mueve el IconButton al final del Toolbar */}
-          <IconButton color="inherit">
-            <ExitToAppIcon />
+          <IconButton color="inherit" onClick={handlelogout}>
+            <ExitToAppIcon/>
           </IconButton>
         </Toolbar>
       </AppBar>

@@ -10,6 +10,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useState } from 'react';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'; // Import Firebase auth functions
+import { auth } from '../firebase';
 
 function Copyright(props) {
     return (
@@ -24,18 +27,29 @@ function Copyright(props) {
     );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+    const [email, setEmail] = useState('');
+    const [pass, setPass] = useState('');
+    const [error, setError] = useState('');
+
+    const registrar = React.useCallback(() => {
+        createUserWithEmailAndPassword(auth, email, pass)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                console.log(user);
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode, errorMessage);
+            });
+    }, [email, pass]);
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        registrar();
     };
 
     return (
@@ -58,27 +72,6 @@ export default function SignUp() {
                     </Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    autoComplete="given-name"
-                                    name="firstName"
-                                    required
-                                    fullWidth
-                                    id="firstName"
-                                    label="Primer Nombre"
-                                    autoFocus
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="lastName"
-                                    label="Segundo Nombre"
-                                    name="lastName"
-                                    autoComplete="family-name"
-                                />
-                            </Grid>
                             <Grid item xs={12}>
                                 <TextField
                                     required
@@ -87,17 +80,21 @@ export default function SignUp() {
                                     label="Correo electrónico"
                                     name="email"
                                     autoComplete="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
                                     required
                                     fullWidth
-                                    name="password"
-                                    label="Password"
-                                    type="password"
                                     id="password"
+                                    label="Password"
+                                    name="password"
                                     autoComplete="new-password"
+                                    type="password"
+                                    value={pass}
+                                    onChange={(e) => setPass(e.target.value)}
                                 />
                             </Grid>
                         </Grid>
