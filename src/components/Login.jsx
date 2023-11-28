@@ -40,20 +40,21 @@ export const Login = () => {
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
 
-  const loguear = React.useCallback(() => {
+  const loguear = (() => {
     signInWithEmailAndPassword(auth, email, pass)
         .then((userCredential) => {
             const user = userCredential.user;
             localStorage.setItem('accessToken', user.stsTokenManager.accessToken);
             localStorage.setItem('refreshToken', user.stsTokenManager.refreshToken);
             navigate('/home');
+            window.location.reload();
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(errorCode, errorMessage);
         });
-}, [email, pass]);
+});
 
   const handleSubmit = async (event) => {
     event.preventDefault();

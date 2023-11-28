@@ -45,6 +45,7 @@ export const Home = () => {
       navigate('/login');
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
+      window.location.reload();
     }).catch((error) => {
       console.log(error);
     });
