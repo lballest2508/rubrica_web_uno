@@ -16,7 +16,9 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../firebase";
+import { auth, db } from "../firebase";
+import { useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
 
 
 const style = {
@@ -39,6 +41,22 @@ const style = {
 export const BookList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [books, setBooks] = useState([]);
+  const navigate = useNavigate();
+
+  const redireccionar = () => { 
+    navigate('/home');
+  }
+
+  const handlelogout = () => { 
+    signOut(auth).then(() => {
+      navigate('/login');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      window.location.reload();
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -82,11 +100,12 @@ export const BookList = () => {
             variant="h6"
             color="inherit"
             noWrap
-            sx={{ flexGrow: 1, ml: 2 }}
+            sx={{ flexGrow: 1, ml: 2, cursor: 'pointer' }}
+            onClick={redireccionar}
           >
             Biblioteca Unicosta
           </Typography>
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={handlelogout}>
             <ExitToAppIcon />
           </IconButton>
         </Toolbar>

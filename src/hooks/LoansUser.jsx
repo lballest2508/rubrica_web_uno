@@ -6,6 +6,8 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from
 import { useState } from 'react';
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { updateDoc, doc as firestoreDoc, setDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 export const LoansUser = ({books}) => {
 
@@ -15,8 +17,8 @@ export const LoansUser = ({books}) => {
 
   const filteredBooks = books.filter(
     (book) =>
-      book.Titulo.toLowerCase().includes(filter.toLowerCase()) ||
-      book.Autor.toLowerCase().includes(filter.toLowerCase())
+      book.libro.Titulo.toLowerCase().includes(filter.toLowerCase()) ||
+      book.libro.Autor.toLowerCase().includes(filter.toLowerCase())
   );
 
   const handleChangePage = (event, newPage) => {
@@ -28,8 +30,21 @@ export const LoansUser = ({books}) => {
     setPage(1);
   };
 
-  const handleDevolverLibro = (bookId) => {
-    console.log(`Prestar libro con ID: ${bookId}`);
+  const handleDevolverLibro = async (bookId, loansId) => {
+    try {
+      // Actualizar estado de libros_prestados
+      const librosPrestadosDocRef = firestoreDoc(db, "libros_prestados", loansId);
+      await updateDoc(librosPrestadosDocRef, { estado: 0 });
+  
+      // Actualizar disponibilidad del libro en la colección libros
+      const libroDocRef = firestoreDoc(db, "libros", bookId);
+      await setDoc(libroDocRef, { Disponibilidad: 1 }, { merge: true });
+  
+      console.log(`Libro devuelto con éxito. Libro ID: ${bookId}, Préstamo ID: ${loansId}`);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error al devolver el libro:", error);
+    }
   };
   
   return (
@@ -67,16 +82,16 @@ export const LoansUser = ({books}) => {
               .slice((page - 1) * rowsPerPage, page * rowsPerPage)
               .map((book) => (
                 <TableRow key={book.id}>
-                  <TableCell>{book.Titulo}</TableCell>
-                  <TableCell>{book.Autor}</TableCell>
-                  <TableCell>{book.Descripcion}</TableCell>
-                  <TableCell>{book.Disponibilidad}</TableCell>
+                  <TableCell>{book.libro.Titulo}</TableCell>
+                  <TableCell>{book.libro.Autor}</TableCell>
+                  <TableCell>{book.libro.Descripcion}</TableCell>
+                  <TableCell>{book.libro.Disponibilidad}</TableCell>
                   <TableCell>
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={() => handleDevolverLibro(book.id)}
-                      disabled={book.Disponibilidad !== 'Disponible'}
+                      onClick={() => handleDevolverLibro(book.libro.id, book.id)}
+                      disabled={book.libro.Disponibilidad !== 0}
                     >
                       Devolver
                     </Button>

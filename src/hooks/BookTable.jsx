@@ -10,7 +10,7 @@ import TextField from '@mui/material/TextField';
 import Pagination from '@mui/material/Pagination';
 import Button from '@mui/material/Button';
 import { Box, Typography } from '@mui/material';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp, doc as firestoreDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 
 export const BookTable = ({ books }) => {
@@ -40,6 +40,11 @@ export const BookTable = ({ books }) => {
       id_libro: bookId,
       fecha_registra: serverTimestamp(),
     });
+    const libroDocRef = firestoreDoc(db, 'libros', bookId);
+    await updateDoc(libroDocRef, {
+      Disponibilidad: 0,
+    });
+    window.location.reload();
     console.log('Libro prestado con éxito. ID del préstamo:', prestamo_doc.id);
   };
 
