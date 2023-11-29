@@ -15,8 +15,8 @@ export const LoansUser = ({books}) => {
 
   const filteredBooks = books.filter(
     (book) =>
-      book.titulo.toLowerCase().includes(filter.toLowerCase()) ||
-      book.autor.toLowerCase().includes(filter.toLowerCase())
+      book.Titulo.toLowerCase().includes(filter.toLowerCase()) ||
+      book.Autor.toLowerCase().includes(filter.toLowerCase())
   );
 
   const handleChangePage = (event, newPage) => {
@@ -67,16 +67,16 @@ export const LoansUser = ({books}) => {
               .slice((page - 1) * rowsPerPage, page * rowsPerPage)
               .map((book) => (
                 <TableRow key={book.id}>
-                  <TableCell>{book.titulo}</TableCell>
-                  <TableCell>{book.autor}</TableCell>
-                  <TableCell>{book.descripcion}</TableCell>
-                  <TableCell>{book.disponibilidad}</TableCell>
+                  <TableCell>{book.Titulo}</TableCell>
+                  <TableCell>{book.Autor}</TableCell>
+                  <TableCell>{book.Descripcion}</TableCell>
+                  <TableCell>{book.Disponibilidad}</TableCell>
                   <TableCell>
                     <Button
                       variant="contained"
                       color="primary"
                       onClick={() => handleDevolverLibro(book.id)}
-                      disabled={book.disponibilidad !== 'Disponible'}
+                      disabled={book.Disponibilidad !== 'Disponible'}
                     >
                       Devolver
                     </Button>

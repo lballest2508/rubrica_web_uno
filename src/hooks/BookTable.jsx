@@ -10,6 +10,8 @@ import TextField from '@mui/material/TextField';
 import Pagination from '@mui/material/Pagination';
 import Button from '@mui/material/Button';
 import { Box, Typography } from '@mui/material';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { db } from '../firebase';
 
 export const BookTable = ({ books }) => {
   const [page, setPage] = useState(1);
@@ -18,8 +20,8 @@ export const BookTable = ({ books }) => {
 
   const filteredBooks = books.filter(
     (book) =>
-      book.titulo.toLowerCase().includes(filter.toLowerCase()) ||
-      book.autor.toLowerCase().includes(filter.toLowerCase())
+      book.Titulo.toLowerCase().includes(filter.toLowerCase()) ||
+      book.Autor.toLowerCase().includes(filter.toLowerCase())
   );
 
   const handleChangePage = (event, newPage) => {
@@ -31,11 +33,17 @@ export const BookTable = ({ books }) => {
     setPage(1);
   };
 
-  const handlePrestarClick = (bookId) => {
-    // Lógica para manejar el evento de hacer clic en el botón "prestar"
-    // Puedes implementar la lógica según tus necesidades, como cambiar el estado de disponibilidad del libro, etc.
-    console.log(`Prestar libro con ID: ${bookId}`);
+  const handlePrestarClick = async (bookId) => {
+    const id_persona = localStorage.getItem('id_persona');
+    const prestamo_doc = await addDoc(collection(db, 'libros_prestados'), {
+      id_persona,
+      id_libro: bookId,
+      fecha_registra: serverTimestamp(),
+    });
+    console.log('Libro prestado con éxito. ID del préstamo:', prestamo_doc.id);
   };
+
+  
 
   return (
     <>
@@ -69,16 +77,16 @@ export const BookTable = ({ books }) => {
               .slice((page - 1) * rowsPerPage, page * rowsPerPage)
               .map((book) => (
                 <TableRow key={book.id}>
-                  <TableCell>{book.titulo}</TableCell>
-                  <TableCell>{book.autor}</TableCell>
-                  <TableCell>{book.descripcion}</TableCell>
-                  <TableCell>{book.disponibilidad}</TableCell>
+                  <TableCell>{book.Titulo}</TableCell>
+                  <TableCell>{book.Autor}</TableCell>
+                  <TableCell>{book.Descripcion}</TableCell>
+                  <TableCell>{book.Disponibilidad !== 1 ? <td>No Disponible</td> : <td>Disponible</td>}</TableCell>
                   <TableCell>
                     <Button
                       variant="contained"
                       color="primary"
                       onClick={() => handlePrestarClick(book.id)}
-                      disabled={book.disponibilidad !== 'Disponible'}
+                      disabled={book.Disponibilidad !== 1}
                     >
                       Prestar
                     </Button>

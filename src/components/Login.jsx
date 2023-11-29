@@ -44,6 +44,7 @@ export const Login = () => {
     signInWithEmailAndPassword(auth, email, pass)
         .then((userCredential) => {
             const user = userCredential.user;
+            localStorage.setItem('id_persona', user.uid);
             localStorage.setItem('accessToken', user.stsTokenManager.accessToken);
             localStorage.setItem('refreshToken', user.stsTokenManager.refreshToken);
             navigate('/home');

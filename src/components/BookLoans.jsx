@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -11,26 +11,35 @@ import BookIcon from "@mui/icons-material/Book";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { LoansUser } from "../hooks/LoansUser";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
 
-const libros = [
-    {
-      id: 1,
-      titulo: "Harry Potter y la piedra filosofal",
-      autor: "J.K. Rowling",
-      descripcion: "Primera entrega de la saga de Harry Potter.",
-      disponibilidad: "Disponible",
-    },
-    {
-      id: 2,
-      titulo: "Harry Potter y la piedra filosofal",
-      autor: "J.K. Rowling",
-      descripcion: "Primera entrega de la saga de Harry Potter.",
-      disponibilidad: "Disponible",
-    },
-  ];
+
 
 export const BookLoans = () => {
     const defaultTheme = createTheme();
+    const [books, setBooks] = useState([]);
+
+    useEffect(() => {
+        const obtenerDocumentos = async () => {
+          try {
+            const librosCollectionRef = collection(db, 'libros_prestados');
+            const snapshot = await getDocs(librosCollectionRef);
+      
+            const listaDocumentos = snapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data()
+            }));
+    
+            setBooks(listaDocumentos); 
+            
+          } catch (error) {
+            console.error('Error al obtener documentos:', error);
+          }
+        };
+      
+        obtenerDocumentos();
+      }, []);
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -53,7 +62,7 @@ export const BookLoans = () => {
                 </Toolbar>
             </AppBar>
 
-            <LoansUser books={libros} />
+            <LoansUser books={books} />
 
             {/* Botón de añadir nuevo libro */}
             <Box

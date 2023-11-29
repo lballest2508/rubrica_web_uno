@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -14,8 +14,10 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
+
 
 const style = {
   position: "absolute",
@@ -36,6 +38,7 @@ const style = {
 
 export const BookList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [books, setBooks] = useState([]);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -46,39 +49,28 @@ export const BookList = () => {
   };
 
   const defaultTheme = createTheme();
+  
+  useEffect(() => {
+    const obtenerDocumentos = async () => {
+      try {
+        const librosCollectionRef = collection(db, 'libros');
+        const snapshot = await getDocs(librosCollectionRef);
+  
+        const listaDocumentos = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
 
-  const listaDeLibros = [
-    {
-      id: 1,
-      titulo: 'Cien años de soledad',
-      autor: 'Gabriel García Márquez',
-      descripcion: 'Una novela que narra la historia de la familia Buendía en el pueblo ficticio de Macondo.',
-      disponibilidad: 'Disponible',
-    },
-    {
-      id: 2,
-      titulo: '1984',
-      autor: 'George Orwell',
-      descripcion: 'Una novela distópica que presenta un futuro totalitario y vigilado.',
-      disponibilidad: 'Prestado',
-    },
-    {
-      id: 3,
-      titulo: 'To Kill a Mockingbird',
-      autor: 'Harper Lee',
-      descripcion: 'Una novela que aborda temas de injusticia racial y moral en el sur de Estados Unidos.',
-      disponibilidad: 'Disponible',
-    },
-    {
-      id: 4,
-      titulo: 'El señor de los anillos',
-      autor: 'J.R.R. Tolkien',
-      descripcion: 'Una épica de fantasía que sigue las aventuras de Frodo Bolsón en su misión para destruir el Anillo Único.',
-      disponibilidad: 'Prestado',
-    },
-    // Agrega más libros según sea necesario
-  ];
-
+        setBooks(listaDocumentos); 
+        
+      } catch (error) {
+        console.error('Error al obtener documentos:', error);
+      }
+    };
+  
+    obtenerDocumentos();
+  }, []);
+  
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -101,7 +93,7 @@ export const BookList = () => {
       </AppBar>
 
       {/* Lista de libros */}
-      <BookTable books={listaDeLibros} />
+      <BookTable books={books} />
 
       {/* Modal para registrar libros */}
       <Modal
