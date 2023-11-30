@@ -1,3 +1,4 @@
+// Importación de módulos y componentes de React y Material-UI
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -12,12 +13,13 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import image from '../../assets/img/unicosta.jpg';
+import image from '../../assets/img/unicosta.jpg';  // Importa la imagen de fondo
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 import { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
+// Función para mostrar información de derechos de autor
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -31,15 +33,19 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
+// Tema por defecto de Material-UI
 const defaultTheme = createTheme();
 
+// Componente funcional Login
 export const Login = () => {
+  // Hook de navegación de React Router
   const navigate = useNavigate();
+
+  // Estados para el correo electrónico y la contraseña
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
 
+  // Función para manejar el inicio de sesión
   const loguear = (() => {
     signInWithEmailAndPassword(auth, email, pass)
         .then((userCredential) => {
@@ -55,25 +61,30 @@ export const Login = () => {
             const errorMessage = error.message;
             console.log(errorCode, errorMessage);
         });
-});
+  });
 
+  // Función para manejar el envío del formulario
   const handleSubmit = async (event) => {
     event.preventDefault();
     loguear();
   };
   
-
+  // Renderizado del componente
   return (
+    // Establece el tema por defecto para el componente
     <ThemeProvider theme={defaultTheme}>
+      {/* Contenedor principal */}
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
+
+        {/* Sección de la imagen de fondo */}
         <Grid
           item
           xs={false}
           sm={4}
           md={7}
           sx={{
-            backgroundImage: `url(${image})`,
+            backgroundImage: `url(${image})`,  // Establece la imagen de fondo
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -81,6 +92,8 @@ export const Login = () => {
             backgroundPosition: 'center',
           }}
         />
+
+        {/* Sección del formulario de inicio de sesión */}
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
@@ -91,13 +104,17 @@ export const Login = () => {
               alignItems: 'center',
             }}
           >
+            {/* Icono de bloqueo */}
             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
               <LockOutlinedIcon />
             </Avatar>
+            
+            {/* Título y formulario de inicio de sesión */}
             <Typography component="h1" variant="h5">
               Iniciar sesión
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+              {/* Campos de entrada para el correo electrónico y la contraseña */}
               <TextField
                 margin="normal"
                 required
@@ -122,10 +139,14 @@ export const Login = () => {
                 value={pass}
                 onChange={(e) => setPass(e.target.value)}
               />
+
+              {/* Opciones adicionales del formulario (recordar contraseña) */}
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Recuérdame"
               />
+
+              {/* Botón de inicio de sesión */}
               <Button
                 type="submit"
                 fullWidth
@@ -134,6 +155,8 @@ export const Login = () => {
               >
                 Iniciar sesión
               </Button>
+
+              {/* Enlaces adicionales (olvidó su contraseña, registrarse) */}
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">
@@ -146,6 +169,8 @@ export const Login = () => {
                   </Link>
                 </Grid>
               </Grid>
+
+              {/* Información de derechos de autor */}
               <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>

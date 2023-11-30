@@ -1,3 +1,4 @@
+// Importación de módulos y componentes de React y React Router
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import { Home } from '../components/Home';
@@ -6,6 +7,7 @@ import { Login } from '../components/Login';
 import SignUp from '../components/SingUp';
 import { BookLoans } from '../components/BookLoans';
 
+// Componente funcional AppRoutes
 export const AppRoutes = () => {
   // Estado para almacenar el token de acceso
   const [accessToken, setAccessToken] = useState(null);

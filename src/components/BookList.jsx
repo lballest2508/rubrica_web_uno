@@ -1,11 +1,12 @@
+// Importación de módulos y componentes de React y Material-UI
 import { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import { BookTable } from "../hooks/BookTable"; // Crear este componente para la tabla de libros
-import { BookForm } from "../hooks/BookForm"; // Crear este componente para el formulario de libros
+import { BookTable } from "../hooks/BookTable"; // Importa un componente para la tabla de libros
+import { BookForm } from "../hooks/BookForm"; // Importa un componente para el formulario de libros
 import { ThemeProvider } from "@emotion/react";
 import { CssBaseline, createTheme } from "@mui/material";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
@@ -20,7 +21,7 @@ import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 
-
+// Estilos para el modal
 const style = {
   position: "absolute",
   top: "50%",
@@ -38,26 +39,31 @@ const style = {
   justifyContent: "space-between",
 };
 
+// Definición del componente BookList
 export const BookList = () => {
+  // Estado para controlar la apertura/cierre del modal y la lista de libros
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [books, setBooks] = useState([]);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Hook para navegación en React Router
 
-  const redireccionar = () => { 
+  // Función para redireccionar al usuario a la página de inicio
+  const redireccionar = () => {
     navigate('/home');
   }
 
-  const handlelogout = () => { 
+  // Función para manejar el cierre de sesión del usuario
+  const handlelogout = () => {
     signOut(auth).then(() => {
       navigate('/login');
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
-      window.location.reload();
+      window.location.reload(); // Recarga la página después de cerrar sesión
     }).catch((error) => {
       console.log(error);
     });
   }
 
+  // Funciones para abrir y cerrar el modal de registro de libros
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -66,29 +72,32 @@ export const BookList = () => {
     setIsModalOpen(false);
   };
 
+  // Tema por defecto de Material-UI
   const defaultTheme = createTheme();
-  
+
+  // Efecto secundario para obtener la lista de libros al cargar el componente
   useEffect(() => {
     const obtenerDocumentos = async () => {
       try {
         const librosCollectionRef = collection(db, 'libros');
         const snapshot = await getDocs(librosCollectionRef);
-  
+
         const listaDocumentos = snapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
         }));
 
-        setBooks(listaDocumentos); 
-        
+        setBooks(listaDocumentos);
+
       } catch (error) {
         console.error('Error al obtener documentos:', error);
       }
     };
-  
+
     obtenerDocumentos();
   }, []);
-  
+
+  // Renderizado del componente
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />

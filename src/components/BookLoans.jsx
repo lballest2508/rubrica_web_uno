@@ -1,3 +1,4 @@
+// Importación de módulos y componentes de React y Material-UI
 import { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -10,32 +11,36 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import BookIcon from "@mui/icons-material/Book";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { LoansUser } from "../hooks/LoansUser";
+import { LoansUser } from "../hooks/LoansUser"; // Importa un componente para la tabla de préstamos del usuario
 import { collection, getDocs, getDoc, where, query, doc as firestoreDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 
+// Definición del componente BookLoans
 export const BookLoans = () => {
     const defaultTheme = createTheme();
-    const [books, setBooks] = useState([]);
+    const [books, setBooks] = useState([]); // Estado para almacenar la lista de libros prestados
     const navigate = useNavigate();
 
+    // Función para cerrar sesión
     const handlelogout = () => { 
         signOut(auth).then(() => {
-          navigate('/login');
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
-          window.location.reload();
+            navigate('/login');
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            window.location.reload();
         }).catch((error) => {
-          console.log(error);
+            console.log(error);
         });
-      }
+    }
 
+    // Función para redireccionar al usuario a la página de inicio
     const redireccionar = () => {
         navigate('/home');
     }
 
+    // Efecto secundario para obtener la lista de libros prestados al usuario
     useEffect(() => {
         const obtenerDocumentos = async () => {
             try {
@@ -76,6 +81,7 @@ export const BookLoans = () => {
         obtenerDocumentos();
     }, []);
 
+    // Renderizado del componente
     return (
         <ThemeProvider theme={defaultTheme}>
             <CssBaseline />
@@ -98,9 +104,10 @@ export const BookLoans = () => {
                 </Toolbar>
             </AppBar>
 
+            {/* Componente LoansUser para mostrar la tabla de préstamos del usuario */}
             <LoansUser books={books} />
 
-            {/* Botón de añadir nuevo libro */}
+            {/* Botón de añadir nuevo libro (enlazado a la página de libros) */}
             <Box
                 sx={{
                     position: "fixed",

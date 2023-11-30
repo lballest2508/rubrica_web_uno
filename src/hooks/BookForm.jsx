@@ -1,3 +1,4 @@
+// Importación de módulos y componentes de React y Material-UI
 import React, { useState } from 'react';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -8,6 +9,7 @@ import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../firebase';
 import styled from '@emotion/styled';
 
+// Estilo para el encabezado del formulario
 const headerStyle = {
   backgroundColor: 'primary.main',
   color: 'white',
@@ -18,6 +20,7 @@ const headerStyle = {
   alignItems: 'center',
 };
 
+// Estilo para el pie de página del formulario
 const footerStyle = {
   display: 'flex',
   justifyContent: 'center',
@@ -25,6 +28,7 @@ const footerStyle = {
   marginBottom: '20px',
 };
 
+// Estilo para un input oculto para la carga de imágenes
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
   clipPath: 'inset(50%)',
@@ -37,14 +41,18 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
+// Componente funcional BookForm
 export const BookForm = ({ handleCloseModal }) => {
+  // Estados para los datos del libro
   const [titulo, setTitulo] = useState('');
   const [autor, setAutor] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [disponibilidad, setDisponibilidad] = useState('');
 
+  // Función para manejar el envío del formulario
   const handleSubmit = async (event) => {
     event.preventDefault();
+    // Agrega un nuevo documento a la colección 'libros' en Firestore
     const libroDocRef = await addDoc(collection(db, 'libros'), {
       Ano: new Date().getFullYear(),
       Autor: autor,
@@ -54,11 +62,13 @@ export const BookForm = ({ handleCloseModal }) => {
       Titulo: titulo,
     });
     console.log('Libro guardado con éxito. ID del libro:', libroDocRef.id);
-    handleCloseModal();
+    handleCloseModal(); // Cierra el modal después de guardar el libro
   };
 
+  // Renderizado del componente
   return (
     <>
+      {/* Encabezado del formulario */}
       <Box sx={headerStyle}>
         <ImportContactsIcon sx={{ mr: 1, mt: 1 }} />
         <Typography variant="h6" gutterBottom>
@@ -66,6 +76,8 @@ export const BookForm = ({ handleCloseModal }) => {
         </Typography>
         <CloseIcon sx={{ cursor: 'pointer' }} onClick={handleCloseModal} />
       </Box>
+
+      {/* Campos de entrada para los detalles del libro */}
       <Grid
         container
         style={{
@@ -128,10 +140,13 @@ export const BookForm = ({ handleCloseModal }) => {
           />
         </Grid>
       </Grid>
+
+      {/* Pie de página del formulario con botones de carga de imagen y guardar */}
       <Box sx={footerStyle}>
         <Grid item xs={6} style={{ marginRight: '5px' }}>
           <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
             Imagen
+            {/* Input oculto para la carga de imágenes */}
             <VisuallyHiddenInput type="file" />
           </Button>
         </Grid>
