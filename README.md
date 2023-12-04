@@ -20,19 +20,19 @@ administradores)
 * Módulo de registro de préstamo y devolución de libros.(crud de préstamos)
 
 # Requerimientos:
-1. La aplicación cuenta con página de inicio (información sobre la biblioteca),
+* La aplicación cuenta con página de inicio (información sobre la biblioteca),
 navbar (presente en todo el sitio), el cual cuenta con links a:
 • formularios de registro/logueo,
 • consultas, búsquedas y registro de prestamos y devoluciones (solo para
 usuarios logueados).
 • link cerrar sesión(disponible una vez el usuario este logueado).
-2. La aplicación debe contar con formulario de registro/logueo de usuarios (solo
+* La aplicación debe contar con formulario de registro/logueo de usuarios (solo
 tipo solicitante, Usuario administrador creado directamente sobre BD), utilizar el
 servicio de autenticación de firebase (email, contraseña).
-3. Una vez el usuario inicia sesión, hay una sección del sitio donde se carga una lista
+* Una vez el usuario inicia sesión, hay una sección del sitio donde se carga una lista
 de libros disponibles, aqui encontraran una funcionalidad para consultar (tipo filtro) los
 libros disponibles.
-4. Para registrar préstamos de libros el libro debe estar disponible (maneje 2
+* Para registrar préstamos de libros el libro debe estar disponible (maneje 2
 estados para la disponibilidad si y no). Una vez un libro es prestado, sale de la lista de
 libros disponibles y pasa a una lista de libros prestados por el usuario.
 5. El usuario solo puede registrar la devolución de un libro anteriormente prestado
