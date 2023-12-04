@@ -21,10 +21,10 @@ administradores)
 
 # Requerimientos:
 * La aplicación cuenta con página de inicio (información sobre la biblioteca),
-navbar (presente en todo el sitio), el cual cuenta con links a:
-• formularios de registro/logueo,
+navbar (presente en todo el sitio), el cual cuenta con links a: /n
+• formularios de registro/logueo, /n
 • consultas, búsquedas y registro de prestamos y devoluciones (solo para
-usuarios logueados).
+usuarios logueados). /n
 • link cerrar sesión(disponible una vez el usuario este logueado).
 * La aplicación debe contar con formulario de registro/logueo de usuarios (solo
 tipo solicitante, Usuario administrador creado directamente sobre BD), utilizar el
