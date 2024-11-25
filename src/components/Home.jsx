@@ -26,8 +26,8 @@ function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://biblioteca.cuc.edu.co/">
-        Biblioteca Unicosta
+      <Link color="inherit" href="#">
+        Centro Medico Universitario
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -70,7 +70,7 @@ export const Home = () => {
 
           {/* Título de la barra de navegación */}
           <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1, ml: 2 }}>
-            Biblioteca Unicosta
+            Centro Medico Universitario
           </Typography>
 
           {/* Botón para cerrar sesión */}
@@ -99,11 +99,11 @@ export const Home = () => {
               color="text.primary"
               gutterBottom
             >
-              ¡Bienvenido a la Biblioteca de la CUC!
+              ¡Bienvenido a su centro Medico Universitario!
             </Typography>
             <Typography variant="h5" align="center" color="text.secondary" paragraph>
-              En este sitio podrás encontrar una amplia gama de libros que te ayudarán para tus estudios,
-              podrás gestionar préstamos, consultar disponibilidad, devoluciones y mucho más!
+              En este sitio podrás encontrar una amplia gama de especialistas que te ayudarán para tus consultas,
+              podrás gestionar citas, consultar disponibilidad, cancelaciones y mucho más!
             </Typography>
           </Container>
         </Box>
@@ -130,11 +130,11 @@ export const Home = () => {
                 <CardContent sx={{ flexGrow: 1, textAlign: 'center' }}>
                   {/* Título de la tarjeta */}
                   <Typography gutterBottom variant="h5" component="h2">
-                    Disponibilidad
+                    Citas
                   </Typography>
                   {/* Descripción de la tarjeta */}
                   <Typography>
-                    En esta sección podrás consultar la disponibilidad de los libros que necesites y realizar préstamos.
+                    En esta sección podrás consultar la disponibilidad de los especialistas que necesites y realizar agendamiento de citas.
                   </Typography>
                 </CardContent>
                 {/* Acciones de la tarjeta */}
@@ -166,11 +166,11 @@ export const Home = () => {
                 <CardContent sx={{ flexGrow: 1, textAlign: 'center' }}>
                   {/* Título de la tarjeta */}
                   <Typography gutterBottom variant="h5" component="h2">
-                    Gestión de Préstamos
+                    Gestión de Citas
                   </Typography>
                   {/* Descripción de la tarjeta */}
                   <Typography>
-                    En esta sección podrás gestionar los préstamos que tengas pendientes.
+                    En esta sección podrás gestionar las citas que tengas pendientes.
                   </Typography>
                 </CardContent>
                 {/* Acciones de la tarjeta */}

@@ -112,7 +112,7 @@ export const BookList = () => {
             sx={{ flexGrow: 1, ml: 2, cursor: 'pointer' }}
             onClick={redireccionar}
           >
-            Biblioteca Unicosta
+            Centro Medico Universitario
           </Typography>
           <IconButton color="inherit" onClick={handlelogout}>
             <ExitToAppIcon />

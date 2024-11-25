@@ -81,8 +81,8 @@ export const BookTable = ({ books }) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Título</TableCell>
-              <TableCell>Autor</TableCell>
+              <TableCell>Especialidad</TableCell>
+              <TableCell>Nombre</TableCell>
               <TableCell>Descripción</TableCell>
               <TableCell>Disponibilidad</TableCell>
               <TableCell>Acciones</TableCell>

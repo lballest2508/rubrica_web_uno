@@ -24,8 +24,8 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://biblioteca.cuc.edu.co/">
-        Biblioteca Unicosta
+      <Link color="inherit" href="#">
+        Centro Medico Universitario
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
