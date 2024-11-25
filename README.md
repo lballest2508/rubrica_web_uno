@@ -43,3 +43,4 @@ libros disponibles y pasa a una lista de libros prestados por el usuario.
 libro). Una vez un libro es devuelto, sale de la lista de libros prestados por el usuario y
 pasa a la lista de libros disponibles.
 6. El modulo administrador constituye un crud para la gestión de los libros en firestore
+# rubrica_web_uno
