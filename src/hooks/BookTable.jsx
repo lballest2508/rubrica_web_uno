@@ -107,7 +107,7 @@ export const BookTable = ({ books }) => {
                       onClick={() => handlePrestarClick(book.id)}
                       disabled={book.Disponibilidad !== 1}
                     >
-                      Prestar
+                      Agendar Cita
                     </Button>
                   </TableCell>
                 </TableRow>
